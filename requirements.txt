@@ -1,0 +1,5 @@
+Werkzeug==3.0.4
+Flask==3.0.3
+requests
+prometheus-client~=0.21
+Flask-APScheduler~=1.13
