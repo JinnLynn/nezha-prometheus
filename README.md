@@ -11,6 +11,8 @@ Convert [Nezha][] data to [Prometheus][] metrics.
 * NEZHA_URL: nezha 访问地址，不包括api路径，如：https://status.example.com)，**必需**
 * NP_NAMESPACE: prometheus metric 前缀，默认: nezha_server，**非必需**
 * NP_UPDATE_INTERVAL: 读取API间隔，单位：秒， 默认： 5，**非必需**
+* NP_AUTH_USR: basic auth username **非必需**
+* NP_AUTH_PWD: basic auth password **非必需**
 
 
 [Nezha]:        https://nezha.wiki/

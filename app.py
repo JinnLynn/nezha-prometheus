@@ -5,11 +5,14 @@ from flask import Flask, current_app
 import requests
 from prometheus_client import Counter, Gauge, generate_latest, CollectorRegistry
 from flask_apscheduler import APScheduler
+from flask_httpauth import HTTPBasicAuth
 
 NEZHA_TOKEN = os.getenv('NP_NEZHA_TOKEN')
 NEZHA_URL = os.getenv('NP_NEZHA_URL')
 NP_NAMESPACE = os.getenv('NP_NAMESPACE', 'nezha_server')
-NP_UPDATE_INTERVAL = 5
+NP_UPDATE_INTERVAL = os.getenv('NP_UPDATE_INTERVAL', 5)
+NP_AUTH_USR = os.getenv('NP_AUTH_USR')
+NP_AUTH_PWD = os.getenv('NP_AUTH_PWD')
 
 
 T = TypeVar('T', Counter, Gauge)
@@ -108,10 +111,24 @@ def create_app():
 
 
 app = create_app()
+auth = HTTPBasicAuth()
+
+
+@auth.verify_password
+def verify_password(username, password):
+    if username == NP_AUTH_USR and password == NP_AUTH_PWD:
+        return username
+
+
+def login_required(f):
+    if NP_AUTH_USR and NP_AUTH_PWD:
+        return auth.login_required(f)
+    return f
 
 
 @app.route('/')
 @app.route('/metrics')
+@login_required
 def view_metric():
     return (generate_latest(Metric.registry), 200, {'Content-Type': 'text/plain; charset=utf-8',
                                                     'Connection': 'close'})
