@@ -5,6 +5,14 @@ Convert [Nezha][] data to [Prometheus][] metrics.
 
 ## 使用
 
+```shell
+pip install -r requirements.txt
+NEZHA_TOKEN=__TOKEN__ NEZHA_URL=__URL__ flask run
+
+# docker
+docker run -e NEZHA_TOKEN=__TOKEN__ -e NEZHA_URL=__URL__ -e UWSGI_PROTOCOL=http -p 8000:8000 jinnlynn/nezhi-prometheus
+```
+
 需通过环境变量配置：
 
 * NEZHA_TOKEN: nezha [API Token](https://nezha.wiki/guide/api.html#%E5%88%9B%E5%BB%BA-token)，**必需**
